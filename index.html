@@ -2,28 +2,28 @@
 <html lang="en">
     <head>
         <title>Sign Up Page</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.in.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     </head>
     <body>
     <h1>Sign Up</h1>
     
     First Name:     <input type="text" name="fname"><br>
     Last Name:      <input type="text" name="lName"><br>
-    Gender:         <input type="radio" name="gender" value="m"> Male
+    Gender:         <input type="radio" name="gender" value="m"> Male<br>
                     <input type="radio" name="gender" value="f"> Female<br><br>
     
     Zip Code:       <input type="text" name="zip" id="zip"><br>
     City:           <span id="city"></span><br>
-    Latitude:       <br>
-    Longitude:      <br>
+    Latitude:       <span id="latitude"></span><br>
+    Longitude:      <span id="longitude"></span><br><br>
     
     State:
-    <select id="state" name="state">
-        <option value="">Select One</option>
-        <option value="ca">California</option>
-        <option value="ny">New York</option>
-        <option value="tx">Texas</option>
-    </select><br>
+                    <select id="state" name="state">
+                        <option value="">Select One</option>
+                        <option value="ca">California</option>
+                        <option value="ny">New York</option>
+                        <option value="tx">Texas</option>
+                    </select><br>
     
     Select a County: <select id="county"></select><br><br>
     
@@ -37,18 +37,44 @@
         //Displaying City from API after typing a zip code
         $("#zip").on("change", function(){
             //alert($("#zip").val());
-            
             $.ajax({
-                method:"GET",
-                url:"https://cst336.herokuapp.com/projects/api/cityInfo.API.php",
-                dataType:"json",
-                data:{"zip": $("#zip").val() },
-                success: function(result,status){
-                    alert(result);
+                method:     "GET",
+                url:        "https://cst336.herokuapp.com/projects/api/cityInfoAPI.php",
+                dataType:   "json",
+                data:       {"zip": $("#zip").val() },
+                success:    function(result,status){
+                    
+                    //alert(result.city);
+                    $("#city").html(result.city);
+                    $("#latitude").html(result.latitude);
+                    $("#longitude").html(result.longitude);
+                    
                 }
             });//ajax
             
         });//zip
+        
+        $("#state").on("change",function(){
+            //alert($("#state").val());
+            
+            $.ajax({
+                method:     "GET",
+                url:        "https://cst336.herokuapp.com/projects/api/countyListAPI.php",
+                dataType:   "json",
+                data:       {"state": $("#state").val()},
+                success:    function(result,status) {
+                    
+                    //alert(result[0].county);
+                    $("#county").html("<option>Select One</option>")
+                    for (let i=0; i < result.length; i++){
+                        $("#county").append("<option>" + result[i].county + "</option>");
+                    }
+                }
+            });//ajax
+            
+        });//state
+        
+        
     </script>
 
 
