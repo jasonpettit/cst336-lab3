@@ -70,14 +70,14 @@
                 data:       {"zip": $("#zip").val() },
                 success:    function(result,status){
                  
-                    if(result != ""){
-                        $("#city").html(result.city);
-                        $("#latitude").html(result.latitude);
-                        $("#longitude").html(result.longitude);                         
+                    if(result == false){
+                        $("#zipCodeError").html("Invalid Zip Code");
+                        $("#zipCodeError").css("color","red");                        
                     }
                     else{
-                        $("#zipCodeError").html("Invalid Zip Code");
-                        $("#zipCodeError").css("color","red"); 
+                        $("#city").html(result.city);
+                        $("#latitude").html(result.latitude);
+                        $("#longitude").html(result.longitude);                          
                     }
                 }
             });//ajax
